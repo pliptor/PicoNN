@@ -41,8 +41,8 @@ class spiral : public t_data {
 				field  t = 4.*label;      // angle
 				field dt = 4./(N-1);
 				for (int i = 0; i<N; i++) {
-					X.set(i + label*N, 0,  r * (field)std::sin(t + 0.2*rd->randn()));  // first  dimension
-					X.set(i + label*N, 1,  r * (field)std::cos(t + 0.2*rd->randn()));  // second dimension
+					X.set(i + label*N, 0,  r * static_cast<field>(std::sin(t + 0.2*rd->randn())));  // first  dimension
+					X.set(i + label*N, 1,  r * static_cast<field>(std::cos(t + 0.2*rd->randn())));  // second dimension
 					Y.set(i + label*N, 0,  static_cast<field>(label));
 					r += dr;
 					t += dt;
@@ -50,10 +50,10 @@ class spiral : public t_data {
 			}
 		}
 	public:
-		spiral(int N, int D, int K, rand_field &rd) {
+		spiral(int N, int K, rand_field &rd) {
 			assert(K>0 && N>0 && D>0);
 			this->N = N;
-			this->D = D;
+			this->D = 2;
 			this->K = K;
 			this->rd = &rd;
 			build();

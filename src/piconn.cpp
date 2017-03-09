@@ -262,9 +262,8 @@ int main() {
 	// they can't be grouped by drawing a few straight lines. See figure...
 
 	int N = 100;                 // number of points per class
-	int D = 2;                   // dimensions per sample
 	int K = 3;                   // number of classes
-	spiral tdt(N, D, K, rd);
+	spiral tdt(N, K, rd);
 	//tdt.visualize();           // prints the coordinate and class of each point
 
 	// Setup a 2-layer neural network 
