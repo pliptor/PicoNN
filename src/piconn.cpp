@@ -120,7 +120,7 @@ class network {
 		// forward pass routines
 		void evaluate_class_scores() { 
 			Hidden.mult(tdt->X, false, W1, false, static_cast<void*>(&B1)); // Hidden = X * W1 + B1
-			Hidden.ReLU();   // Non-linearity 
+			Hidden.ReLUr();   // Non-linearity 
 			Scores.mult(Hidden, false, W2, false, static_cast<void*>(&B2)); // Scores = Hidden * W2 + B2
 		}
 
@@ -166,7 +166,7 @@ class network {
 		}
 
 		void compute_dReLU() {
-			dHidden.dReLU(Hidden);
+			dHidden.dReLUr(Hidden);
 		}
 
 		void compute_dWdb() {
