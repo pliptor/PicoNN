@@ -39,6 +39,9 @@ class mtx {
 		void mlt_all(field value)  { for (auto &a : v) { a *= value;}; };
 		void div_all(field value)  { for (auto &a : v) { a /= value;}; };
 		void ReLU()                { for (auto &a : v) { a = std::max(static_cast<field>(0.), a); };};
+		void ReLUr()               { for (auto &a : v) { a = std::min(static_cast<field>(0.), a); };};
+		void ReLUb()               { for (auto &a : v) { a = (a >= 0) ? a : a/static_cast<field>(1e2) ; };};
+		void ReLUg()               { for (auto &a : v) { a = (a >= 0.001) ? a : static_cast<field>(0.); };};
 		void exp()                 { for (auto &a : v) { a = std::exp(a); };};
 		void rnd(field k, rand_field &rd)  { for (auto &a : v) { a = k*rd.randn(); };};
 		std::vector<field> &vec()  { return v; };
@@ -47,6 +50,21 @@ class mtx {
 		void dReLU(mtx &b)               { 
 			auto *bv = b.vecp();
 			std::transform(v.begin(), v.end(), bv->begin(), v.begin(), [](field &l, field &r) { return r<=0 ? static_cast<field>(0.) : l ;}); 
+		}
+
+		void dReLUr(mtx &b)               { 
+			auto *bv = b.vecp();
+			std::transform(v.begin(), v.end(), bv->begin(), v.begin(), [](field &l, field &r) { return r>=0 ? static_cast<field>(0.) : l ;}); 
+		}
+
+		void dReLUb(mtx &b)               { 
+			auto *bv = b.vecp();
+			std::transform(v.begin(), v.end(), bv->begin(), v.begin(), [](field &l, field &r) { return r>=0 ? l*static_cast<field>(1e2) : l ;}); 
+		}
+
+		void dReLUg(mtx &b)               { 
+			auto *bv = b.vecp();
+			std::transform(v.begin(), v.end(), bv->begin(), v.begin(), [](field &l, field &r) { return r<=0.001 ? static_cast<field>(0.) : l ;}); 
 		}
 
 		// multiply matrix a by b and add an optional row vector k to each row in axb

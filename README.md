@@ -2,6 +2,10 @@
 
 ## A small 2-layer neural network in C++
 
+|Unix |
+|-------|
+|       |
+
 [PicoNN](https://github.com/pliptor/PicoNN)
 
 * It's a fully functional, self-contained, C++ 2-layer neural network testing and study platform.

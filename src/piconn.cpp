@@ -111,10 +111,10 @@ class network {
 
 		// function to be called to set the initial state of the network
 		void initialize_net(field W1std, field b1const, field W2std, field b2const) { // should b and b2 be independently initialized?
-			W1.rnd(W1std, *rd); // weight is normal distributed with std deviation W1std
-			B1.ld(b1const);     // bias initialized with constant b1const (add random?) 
-			W2.rnd(W2std, *rd); // weight is normal distributed with std deviation W2std
-			B2.ld(b2const);     // bias initialized with constant b2const (add random?)
+			W1.rnd(W1std,  *rd); // weight is normal distributed with std deviation W1std
+			B1.rnd(b1const,*rd); // bias initialized with constant b1const (add random?) 
+			W2.rnd(W2std,  *rd); // weight is normal distributed with std deviation W2std
+			B2.rnd(b1const,*rd); // bias initialized with constant b2const (add random?)
 		}
 
 		// forward pass routines
@@ -273,10 +273,10 @@ int main() {
 
 	// Initial conditions for the network
 	field W1, b1, W2, b2;         
-	W1 = 0.01;
-	b1 = 0.00;
-	W2 = 0.01;
-	b2 = 0.00;
+	W1 = 0.002;
+	b1 = 0.002;
+	W2 = 0.002;
+	b2 = 0.002;
 	nn.initialize_net(W1, b1, W2, b2);
 
 	// Optimization parameters
