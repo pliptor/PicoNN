@@ -36,6 +36,12 @@ class network {
 		rand_field *rd;
 		t_data *tdt;
 
+		field step_size; // gradient descent step size
+		field reg;       // regularization strength
+		field loss;
+		field data_loss;
+		field reg_loss;
+
 		void build() {
 			fprintf(stderr, "Network parameters: Nodes per class  N = %d, Dimension D = %d   Classes K = %d   Hidden nodes h = %d\n",N, D, K, h);
 			W1.init(D, h);      
@@ -54,10 +60,12 @@ class network {
 
 			Probs.init(N*K, K);
 			Correct_log_probs.init(N, K);
+			step_size = static_cast<field>(1.);
+			reg =       static_cast<field>(1e-3);
+			loss =      static_cast<field>(0.);
+			data_loss = static_cast<field>(0.);
+			reg_loss =  static_cast<field>(0.);
 		}
-
-		field step_size = static_cast<field>(1.); // gradient descent step size
-		field reg = static_cast<field>(1e-3);     // regularization strength
 
 		// add regularization gradient constribution
 		void add_regularization() {
@@ -65,9 +73,6 @@ class network {
 			dW2.linear_add( W2, reg);      // dW2  += reg * W2
 		}
 
-		field loss = static_cast<field>(0.);
-		field data_loss = static_cast<field>(0.);
-		field reg_loss = static_cast<field>(0.);
 	public:
 		mtx W1, B1;
 		mtx W2, B2;
@@ -90,6 +95,16 @@ class network {
 		field get_data_loss() { return data_loss ; }; 
 		field get_reg_loss()  { return reg_loss  ; }; 
 
+		// gradient descent step sizes 
+		// normally between 1. and smaller values
+		void set_step_size(field step_size) {
+			this->step_size = step_size;
+		}
+
+		// regularization parameter
+		void set_reg(field reg) {
+			this->reg = reg;
+		}
 		void network_state(int i) {
 			fprintf(stderr, "**** network state dump ****\n\n");
 			fprintf(stderr, "%d W2:\n",i);      W2.print(10);
@@ -221,16 +236,6 @@ class network {
 			build();
 		}
 
-		// gradient descent step sizes 
-		// normally between 1. and smaller values
-		void set_step_size(field step_size) {
-			this->step_size = step_size;
-		}
-
-		// regularization parameter
-		void set_reg(field reg) {
-			this->reg = reg;
-		}
 
 		// reports training accuracy
 		void accuracy() {
