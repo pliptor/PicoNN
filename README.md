@@ -4,7 +4,7 @@
 
 |Unix |
 |-------|
-|       |
+|![travis](https://travis-ci.org/pliptor/PicoNN.svg?branch=master)|
 
 [PicoNN](https://github.com/pliptor/PicoNN)
 
