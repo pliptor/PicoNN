@@ -12,14 +12,14 @@
 * It has **less than 500 lines of code** and yet has zero dependencies for a quick and easy instalation. If you understand every line, **you might walk out of with a feeling you understood most of the principles of neural network**.
 * It is not meant for building a full blown application. For a comprehesive platform you may want to try [tiny-dnn](https://github.com/tiny-dnn/tiny-dnn). 
 * Concepts you may learn with this code:
-       - *Forward propagation*
-	- *Back propagation*
-	- *Gradient descent*
-	- *Regularization*
-	- *ReLU activation*
-	- *Metrics to track convergence*
-	- *Effects of floating point precision*
-	- *Effects of weight and bias initialization*
+    - *Forward propagation*
+    - *Back propagation*
+    - *Gradient descent*
+    - *Regularization*
+    - *ReLU activation*
+    - *Metrics to track convergence*
+    - *Effects of floating point precision*
+    - *Effects of weight and bias initialization*
 * The code is a translation of the Python code available in the excellent freely available neural network [cs231n course](http://cs231n.github.io/neural-networks-case-study/) by Andrej Karpathy. You are encouraged to check his webpage to understand all the theory in great detail and try the Python code instead.
 
 ## What does the code do?
