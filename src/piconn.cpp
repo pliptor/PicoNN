@@ -33,8 +33,8 @@ class network {
 		int h;           // number of neurons in hidden layer
 		int N;
 
-		rand_field *rd;
-		t_data *tdt;
+		rand_field *rd;  // normal gaussian random variable
+		t_data *tdt;     // data class
 
 		field step_size; // gradient descent step size
 		field reg;       // regularization strength
@@ -45,14 +45,14 @@ class network {
 		void build() {
 			fprintf(stderr, "Network parameters: Nodes per class  N = %d, Dimension D = %d   Classes K = %d   Hidden nodes h = %d\n",N, D, K, h);
 			W1.init(D, h);      
-			B1.init(h, 1);
+			b1.init(h, 1);
 			W2.init(h, K);
-			B2.init(K, 1);
+			b2.init(K, 1);
 
 			dW1.init(D, h);
-			dB1.init(h, 1);
+			db1.init(h, 1);
 			dW2.init(h, K);
-			dB2.init(K, 1);
+			db2.init(K, 1);
 
 			Hidden.init(N*K, h); 
 			dHidden.init(N*K, h);    
@@ -74,11 +74,11 @@ class network {
 		}
 
 	public:
-		mtx W1, B1;
-		mtx W2, B2;
+		mtx W1, b1;
+		mtx W2, b2;
 
-		mtx dW1, dB1;
-		mtx dW2, dB2;
+		mtx dW1, db1;
+		mtx dW2, db2;
 
 		// hidden layer output
 		mtx Hidden;
@@ -108,35 +108,35 @@ class network {
 		void network_state(int i) {
 			fprintf(stderr, "**** network state dump ****\n\n");
 			fprintf(stderr, "%d W2:\n",i);      W2.print(10);
-			fprintf(stderr, "%d b2:\n",i);      B2.print(10);
+			fprintf(stderr, "%d b2:\n",i);      b2.print(10);
 			fprintf(stderr, "%d scores:\n",i);  Scores.print(8);
 			fprintf(stderr, "%d probs:\n",i);   Probs.print(8);
 			fprintf(stderr, "%d cprobs:\n",i);  Correct_log_probs.print(8);
 			fprintf(stderr, "%d loss(%.10f) = data loss(%.10f) + reg loss(%.10f):\n",i, get_loss(), get_data_loss(), get_reg_loss()); 
 			fprintf(stderr, "%d hidden:\n",i);  Hidden.print(20);
 			fprintf(stderr, "%d dW2:\n",i);     dW2.print(8);
-			fprintf(stderr, "%d db2:\n",i);     dB2.print(8);
+			fprintf(stderr, "%d db2:\n",i);     db2.print(8);
 			fprintf(stderr, "%d dhidden:\n",i); dHidden.print(20);
-			fprintf(stderr, "%d dW1:\n",i);      dW1.print(20);
-			fprintf(stderr, "%d db:\n",i);      dB1.print(20);
-			fprintf(stderr, "%d W1:\n",i);       W1.print(8);
-			fprintf(stderr, "%d b:\n",i);       B1.print(8);
+			fprintf(stderr, "%d dW1:\n",i);     dW1.print(20);
+			fprintf(stderr, "%d db:\n",i);      db1.print(20);
+			fprintf(stderr, "%d W1:\n",i);      W1.print(8);
+			fprintf(stderr, "%d b:\n",i);       b1.print(8);
 			fprintf(stderr, "**** dump completed ****\n\n");
 		}
 
 		// function to be called to set the initial state of the network
-		void initialize_net(field W1std, field b1const, field W2std, field b2const) { // should b and b2 be independently initialized?
+		void initialize_net(field W1std, field b1const, field W2std, field b2const) { 
 			W1.rnd(W1std,  *rd); // weight is normal distributed with std deviation W1std
-			B1.rnd(b1const,*rd); // bias initialized with constant b1const (add random?) 
+			b1.ld(b1const);      // bias initialized with constant b1const  
 			W2.rnd(W2std,  *rd); // weight is normal distributed with std deviation W2std
-			B2.rnd(b1const,*rd); // bias initialized with constant b2const (add random?)
+			b2.ld(b2const);      // bias initialized with constant b2const
 		}
 
 		// forward pass routines
 		void evaluate_class_scores() { 
-			Hidden.mult(tdt->X, false, W1, false, static_cast<void*>(&B1)); // Hidden = X * W1 + B1
+			Hidden.mult(tdt->X, false, W1, false, static_cast<void*>(&b1)); // Hidden = X * W1 + b1
 			Hidden.ReLU();   // Non-linearity 
-			Scores.mult(Hidden, false, W2, false, static_cast<void*>(&B2)); // Scores = Hidden * W2 + B2
+			Scores.mult(Hidden, false, W2, false, static_cast<void*>(&b2)); // Scores = Hidden * W2 + b2
 		}
 
 		void compute_class_probabilities() { 
@@ -173,7 +173,7 @@ class network {
 
 		void compute_dW2db2() { //
 			dW2.mult(Hidden, true, Probs, false); // dW2 = t(Hidden) * dScores
-			dB2.marg(Probs);
+			db2.marg(Probs);
 		}
 
 		void compute_dhidden() {
@@ -186,7 +186,7 @@ class network {
 
 		void compute_dWdb() {
 			dW1.mult(tdt->X, true, dHidden, false);
-			dB1.marg(dHidden, true); 
+			db1.marg(dHidden, true); 
 		}
 
 		// backprop gradient into W2 and b2
@@ -200,9 +200,9 @@ class network {
 		// descend the cost topology by applying adding a negative scaled value of the gradient
 		void descend() {
 			W1.linear_add(dW1, -step_size); // W1 += -stepsize * dW1
-			B1.linear_add(dB1, -step_size); // b1 += -stepsize * db1
+			b1.linear_add(db1, -step_size); // b1 += -stepsize * db1
 			W2.linear_add(dW2, -step_size); // W2 += -stepsize * dW2
-			B2.linear_add(dB2, -step_size); // b2 += -stepsize * db2
+			b2.linear_add(db2, -step_size); // b2 += -stepsize * db2
 		}
 
 		// THE GRADIENT DESCENT. It optimizes the cost function.
@@ -273,15 +273,15 @@ int main() {
 
 	// Setup a 2-layer neural network 
 	// plus the number of hidden nodes
-	int h = 100;                  // hidden nodes 
+	int h = 100;                 // hidden nodes 
 	network nn(h, tdt, rd);
 
 	// Initial conditions for the network
 	field W1, b1, W2, b2;         
-	W1 = 0.002;
-	b1 = 0.002;
-	W2 = 0.002;
-	b2 = 0.002;
+	W1 = 0.01;
+	b1 = 0.00;
+	W2 = 0.01;
+	b2 = 0.00;
 	nn.initialize_net(W1, b1, W2, b2);
 
 	// Optimization parameters
