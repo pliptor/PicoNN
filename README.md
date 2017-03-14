@@ -8,9 +8,9 @@
 
 [PicoNN](https://github.com/pliptor/PicoNN)
 
-* It's a fully functional, self-contained,  neural network testing and study platform.
-* It has **less than 500 lines of code** and yet has zero dependencies for a quick and easy instalation. If you understand every line, **you might walk out of with a feeling you understood most of the principles of neural network**.
-* It is not meant for building a full blown application. For a comprehesive platform you may want to try [tiny-dnn](https://github.com/tiny-dnn/tiny-dnn). 
+* It's a fully functional, self-contained,  neural network testing and studying platform.
+* It has **less than 500 lines of code** and yet no dependencies. If you understand every line of the code, **you might have understood many of the principles of modern neural network**. It does assume you know a little about linear algebra such as matrix multiplications.
+* It is not meant for building a full blown application. You may want to try [tiny-dnn](https://github.com/tiny-dnn/tiny-dnn) for a comprehensive platform. 
 * Concepts you may learn with this code:
     - *Forward propagation*
     - *Back propagation*
@@ -20,19 +20,19 @@
     - *Metrics to track convergence*
     - *Effects of floating point precision*
     - *Effects of weight and bias initialization*
-* The code is a translation of the Python code available in the excellent freely available neural network [cs231n course](http://cs231n.github.io/neural-networks-case-study/) by Andrej Karpathy. You are encouraged to check his webpage to understand all the theory in great detail and try the Python code instead.
+* The code is a translation of the Python code available in the excellent and freely available neural network [cs231n course](http://cs231n.github.io/neural-networks-case-study/) by Andrej Karpathy. You are encouraged to check his web-page that has all the theory in great detail. Also, you may try his original Python code instead.
 
 ## What does the code do?
 
-It segments a group of KxN=300 points, where K=3 and N=100 using a 2-layer neural network with 100 nodes in the hidden layer.
+It segments a group of KxN=300 points, where K=3 and N=100, using a 2-layer neural network with 100 nodes in the hidden layer.
 
-![segmented spiral](http://cs231n.github.io/assets/eg/spiral_net.png) This is a plot of the resulting segmentation found in the cs231n webpage.
+![segmented spiral](http://cs231n.github.io/assets/eg/spiral_net.png) This is a plot of the resulting segmentation after network training found in the cs231n web-page.
 
 ## How To
 
-This code was developed in Linux (Ubuntu 16.04) but it should be easy to build in any platform with a C++11 compiler since it has no dependencies and just one cpp file and two header files.
+This code was developed in Linux (Ubuntu 16.04.1LTS) but it should be easy to build it in any platform with a C++11 compiler. It has no dependencies and just one cpp file and two header files.
 
-* In Linux, type `make` to build the executable `piconn`, which will be found in the `build` folder.
+* In Linux, type `make` to build the executable `piconn`, which will be then found in the `build` folder.
 * To run the the executable type `./piconn`
 
 The output should be 
