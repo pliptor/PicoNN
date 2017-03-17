@@ -1,3 +1,5 @@
+![neuron](https://github.com/pliptor/PicoNN/extras/neuron_cropped.png)
+
 # PicoNN
 
 ## A small 2-layer neural network in C++
