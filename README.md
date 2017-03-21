@@ -28,7 +28,9 @@
 
 It segments a group of KxN=300 points, where K=3 and N=100, using a 2-layer neural network with 100 nodes in the hidden layer.
 
-![segmented spiral](http://cs231n.github.io/assets/eg/spiral_net.png) This is a plot of the resulting segmentation after network training found in the cs231n web-page.
+Data | Segmented Data
+:------:|:--------:
+![Data](https://github.com/pliptor/PicoNN/blob/master/extras/input.png) |![Segmented Data](https://github.com/pliptor/PicoNN/blob/master/extras/output.png)
 
 ## How To
 
