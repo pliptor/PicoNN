@@ -26,11 +26,13 @@
 
 ## What does the code do?
 
-It segments a group of KxN=300 points, where K=3 and N=100, using a 2-layer neural network with 100 nodes in the hidden layer.
+It segments a group of KxN=300 points, where K=3 is the number of distinct class and N=100 the number of points in each class, using a 2-layer neural network with 100 nodes in the hidden layer.
 
 Data | Segmented Data
 :------:|:--------:
 ![Data](https://github.com/pliptor/PicoNN/blob/master/extras/input.png) |![Segmented Data](https://github.com/pliptor/PicoNN/blob/master/extras/output.png)
+
+Note: the code to generate the above graphs are not yet included.
 
 ## How To
 
@@ -56,5 +58,7 @@ training accuracy 99.00%
 ~~~
 
 The last line shows that the segmentation was performed with 99% accuracy. The result will not perfectly match the original Python code. This is because of differences in random number generation.
+
+Note: It is worth trying to solve this problem using other than neural network techniques such as support vector machine (SVM). SVM works pretty well with this particular data.
 
 
