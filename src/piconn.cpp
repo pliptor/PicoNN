@@ -67,12 +67,6 @@ class network {
 			reg_loss =  static_cast<field>(0.);
 		}
 
-		// add regularization gradient constribution
-		void add_regularization() {
-			dW1.linear_add( W1, reg);      // dW1  += reg * W1
-			dW2.linear_add( W2, reg);      // dW2  += reg * W2
-		}
-
 	public:
 		mtx W1, b1;
 		mtx W2, b2;
@@ -195,6 +189,12 @@ class network {
 			compute_dhidden();
 			compute_dReLU();
 			compute_dWdb();
+		}
+
+		// add regularization gradient constribution
+		void add_regularization() {
+			dW1.linear_add( W1, reg);      // dW1  += reg * W1
+			dW2.linear_add( W2, reg);      // dW2  += reg * W2
 		}
 
 		// descend the cost topology by applying adding a negative scaled value of the gradient
