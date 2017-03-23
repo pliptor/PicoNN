@@ -30,7 +30,7 @@ It segments a group of KxN=300 points, where K=3 is the number of distinct class
 
 Data | Segmented Data
 :------:|:--------:
-![Data](https://github.com/pliptor/PicoNN/blob/master/extras/input.png) |![Segmented Data](https://github.com/pliptor/PicoNN/blob/master/extras/output.png)
+![Data](./extras/input.png) |![Segmented Data](./extras/output.png)
 
 Note: the code that generates the above graphs is not yet included.
 
