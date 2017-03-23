@@ -10,7 +10,7 @@
 
 [PicoNN](https://github.com/pliptor/PicoNN)
 
-* It's a fully functional, self-contained,  neural network testing and studying platform.
+* A fully functional, self-contained,  neural network testing and studying platform.
 * It has **less than 500 lines of code** and yet no dependencies. If you understand every line of the code, **you might have understood many of the principles of modern neural network**. It does assume you know a little about linear algebra such as matrix multiplications.
 * It is not meant for building a full blown application. You may want to try [tiny-dnn](https://github.com/tiny-dnn/tiny-dnn) for a comprehensive platform. 
 * Concepts you may learn with this code:
@@ -26,22 +26,22 @@
 
 ## What does the code do?
 
-It segments a group of KxN=300 points, where K=3 is the number of distinct class and N=100 the number of points in each class, using a 2-layer neural network with 100 nodes in the hidden layer.
+It segments a group of KxN=300 points, where K=3 is the number of distinct classes and N=100 the number of points in each class.
 
 Data | Segmented Data
 :------:|:--------:
 ![Data](https://github.com/pliptor/PicoNN/blob/master/extras/input.png) |![Segmented Data](https://github.com/pliptor/PicoNN/blob/master/extras/output.png)
 
-Note: the code to generate the above graphs are not yet included.
+Note: the code that generates the above graphs is not yet included.
 
 ## How To
 
 This code was developed in Linux (Ubuntu 16.04.1LTS) but it should be easy to build it in any platform with a C++11 compiler. It has no dependencies and just one cpp file and two header files.
 
 * In Linux, type `make` to build the executable `piconn`, which will be then found in the `build` folder.
-* To run the the executable type `./piconn`
+* To run the executable type `./piconn`
 
-The output should be 
+The output should look like: 
 
 ~~~
 iteration      0: loss 1.098716 data_loss 1.098692 reg_loss 0.000023     training accuracy 27.67%
