@@ -1,4 +1,4 @@
-![neuron](https://github.com/pliptor/PicoNN/blob/master/extras/neuron_cropped.png)
+![neuron](./extras/neuron_cropped.png)
 
 # PicoNN
 
