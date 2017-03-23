@@ -41,8 +41,9 @@ class spiral : public t_data {
 				field  t = 4.*label;      // angle
 				field dt = 4./(N-1);
 				for (int i = 0; i<N; i++) {
-					X.set(i + label*N, 0,  r * static_cast<field>(std::sin(t + 0.2*rd->randn())));  // first  dimension
-					X.set(i + label*N, 1,  r * static_cast<field>(std::cos(t + 0.2*rd->randn())));  // second dimension
+					field phase_noise = 0.2*rd->randn();
+					X.set(i + label*N, 0,  r * static_cast<field>(std::sin(t + phase_noise)));  // first  dimension
+					X.set(i + label*N, 1,  r * static_cast<field>(std::cos(t + phase_noise)));  // second dimension
 					Y.set(i + label*N, 0,  static_cast<field>(label));
 					r += dr;
 					t += dt;
