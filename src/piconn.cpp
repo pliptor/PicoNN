@@ -271,7 +271,7 @@ int main(int argc, char *argv[]) {
 	int N = 100;                 // number of points per class
 	int K = 3;                   // number of classes
 	spiral tdt(N, K, rd);
-	//tdt.visualize();           // prints the coordinate and class of each point
+	//tdt.print_train();           // prints the train data in libsvm format 
 
 	// Setup a 2-layer neural network 
 	// plus the number of hidden nodes
