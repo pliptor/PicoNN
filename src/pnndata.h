@@ -16,8 +16,7 @@ class t_data { // base class for data
 		int get_N() { return N; };
 		int get_K() { return K; };
 		int get_D() { return D; };
-		virtual void visualize() { // displays X and Y
-		}
+		virtual void print_train() {} // print data in libsvm format 
 };
 
 // This class generates a data model.
@@ -34,12 +33,13 @@ class spiral : public t_data {
 		void build() {
 			X.init(N*K, D);
 			Y.init(N*K, 1);
+			const field arm_step = 4.;
 			for (int label = 0; label<K ; label++)  {
 				// build spiral arms
-				field  r = 0.;            // radius
+				field  r = 0.;               // radius
 				field dr = 1./(N-1);
-				field  t = 4.*label;      // angle
-				field dt = 4./(N-1);
+				field  t = arm_step*label;  // angle
+				field dt = arm_step/(N-1);
 				for (int i = 0; i<N; i++) {
 					field phase_noise = 0.2*rd->randn();
 					X.set(i + label*N, 0,  r * static_cast<field>(std::sin(t + phase_noise)));  // first  dimension
@@ -59,9 +59,9 @@ class spiral : public t_data {
 			this->rd = &rd;
 			build();
 		}
-		void visualize() {
+		void print_train() {  // print data in libsvm format (label 1:first_dimension 2:second_dimension)
 			for(int i = 0; i<K*N; i++)
-				printf("%.8f %.8f %d\n",X.get(i, 0), X.get(i, 1), static_cast<int>(Y.get(i)));
+				printf("%d 1:%.8f 2:%.8f\n",static_cast<int>(Y.get(i)), X.get(i, 0), X.get(i, 1));
 		}
 };
 #endif
