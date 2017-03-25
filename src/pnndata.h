@@ -29,7 +29,7 @@ class t_data { // base class for data
 class spiral : public t_data {
 	private:
 		rand_field *rd;
-		void build() override {
+		void build() {
 			X.init(N*K, D);
 			Y.init(N*K, 1);
 			for (int label = 0; label<K ; label++)  {
@@ -57,7 +57,7 @@ class spiral : public t_data {
 			build();
 		}
 
-		void print_train(bool svm = true) override { // print data in libsvm format (label 1:first_dimension 2:second_dimension)
+		void print_train(bool svm = true) { // print data in libsvm format (label 1:first_dimension 2:second_dimension)
 			for(int i = 0; i<K*N; i++)
 				if(svm)	
 					std::printf("%d 1:%.8f 2:%.8f\n", static_cast<int>(Y.get(i)), X.get(i, 0), X.get(i, 1));
