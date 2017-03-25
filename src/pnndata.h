@@ -46,7 +46,7 @@ class spiral : public t_data {
 					t += dt;
 				}
 			}
-		}
+		};
 	public:
 		spiral(int N, int K, rand_field &rd) {
 			assert(K>0 && N>0 && D>0);
@@ -63,6 +63,6 @@ class spiral : public t_data {
 					std::printf("%d 1:%.8f 2:%.8f\n", static_cast<int>(Y.get(i)), X.get(i, 0), X.get(i, 1));
 				else
 					std::printf("%d   %.8f   %.8f\n", static_cast<int>(Y.get(i)), X.get(i, 0), X.get(i, 1));
-		}
+		};
 };
 #endif
