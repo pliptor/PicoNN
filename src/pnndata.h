@@ -9,10 +9,10 @@ class t_data { // base class for data
 		int D;       // number of input dimensions
 		int N;       // number of points per class
 	public:
-		mtx X;
-		mtx Y;
-		virtual void build() { // populates X and Y
-		}
+		mtx X;       // data
+		mtx Y;       // labels
+		virtual void build() {}                      // populates X and Y
+		virtual void print_train(bool svm = true) {} // svm ? (print data in libsvm format) : (print in plain format) 
 		int get_N() { return N; };
 		int get_K() { return K; };
 		int get_D() { return D; };
@@ -49,7 +49,7 @@ class spiral : public t_data {
 					t += dt;
 				}
 			}
-		}
+		};
 	public:
 		spiral(int N, int K, rand_field &rd) {
 			assert(K>0 && N>0 && D>0);
@@ -59,9 +59,13 @@ class spiral : public t_data {
 			this->rd = &rd;
 			build();
 		}
-		void print_train() {  // print data in libsvm format (label 1:first_dimension 2:second_dimension)
+
+		void print_train(bool svm = true) { // print data in libsvm format (label 1:first_dimension 2:second_dimension)
 			for(int i = 0; i<K*N; i++)
-				printf("%d 1:%.8f 2:%.8f\n",static_cast<int>(Y.get(i)), X.get(i, 0), X.get(i, 1));
-		}
+				if(svm)	
+					std::printf("%d 1:%.8f 2:%.8f\n", static_cast<int>(Y.get(i)), X.get(i, 0), X.get(i, 1));
+				else
+					std::printf("%d   %.8f   %.8f\n", static_cast<int>(Y.get(i)), X.get(i, 0), X.get(i, 1));
+		};
 };
 #endif
