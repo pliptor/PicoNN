@@ -44,16 +44,16 @@ This code was developed in Linux (Ubuntu 16.04.1LTS) but it should be easy to bu
 The output should look like: 
 
 ~~~
-iteration      0: loss 1.098716 data_loss 1.098692 reg_loss 0.000023     training accuracy 27.67%
-iteration   1000: loss 0.286646 data_loss 0.179557 reg_loss 0.107089     training accuracy 92.67%
-iteration   2000: loss 0.273426 data_loss 0.152912 reg_loss 0.120514     training accuracy 96.33%
-iteration   3000: loss 0.251950 data_loss 0.125369 reg_loss 0.126581     training accuracy 98.00%
-iteration   4000: loss 0.246508 data_loss 0.116324 reg_loss 0.130184     training accuracy 98.33%
-iteration   5000: loss 0.245213 data_loss 0.113930 reg_loss 0.131283     training accuracy 98.67%
-iteration   6000: loss 0.243728 data_loss 0.111983 reg_loss 0.131746     training accuracy 99.00%
-iteration   7000: loss 0.242398 data_loss 0.110968 reg_loss 0.131430     training accuracy 99.00%
-iteration   8000: loss 0.242011 data_loss 0.110887 reg_loss 0.131124     training accuracy 99.00%
-iteration   9000: loss 0.241819 data_loss 0.110861 reg_loss 0.130958     training accuracy 99.00%
+iteration      0: loss 1.098764 data_loss 1.098738 reg_loss 0.000026     training accuracy 33.67%
+iteration   1000: loss 0.301150 data_loss 0.195622 reg_loss 0.105528     training accuracy 91.67%
+iteration   2000: loss 0.257442 data_loss 0.132855 reg_loss 0.124587     training accuracy 96.33%
+iteration   3000: loss 0.249705 data_loss 0.121657 reg_loss 0.128048     training accuracy 97.33%
+iteration   4000: loss 0.247016 data_loss 0.117306 reg_loss 0.129711     training accuracy 98.33%
+iteration   5000: loss 0.245445 data_loss 0.115239 reg_loss 0.130206     training accuracy 98.67%
+iteration   6000: loss 0.244663 data_loss 0.114385 reg_loss 0.130277     training accuracy 98.67%
+iteration   7000: loss 0.244248 data_loss 0.113716 reg_loss 0.130532     training accuracy 98.67%
+iteration   8000: loss 0.243881 data_loss 0.113107 reg_loss 0.130774     training accuracy 98.67%
+iteration   9000: loss 0.243553 data_loss 0.112449 reg_loss 0.131104     training accuracy 99.00%
 training accuracy 99.00%
 ~~~
 
