@@ -261,6 +261,8 @@ int main(int argc, char *argv[]) {
 	// normal distributed RV
 	if(argc == 2)
 		generator.seed(atoi(argv[1]));
+	else
+		generator.seed(1);
 	rand_field rd;
 
 	// Data model spiral : N*K points inside a 2 x 2 square 
