@@ -10,8 +10,8 @@
 
 [PicoNN](https://github.com/pliptor/PicoNN)
 
-* A fully functional, self-contained,  neural network testing and studying platform.
-* It has **less than 500 lines of code** and yet no dependencies. If you understand every line of the code, **you might have understood many of the principles of modern neural network**. It does assume you know a little about linear algebra such as matrix multiplications.
+* A self-contained neural network testing and studying platform.
+* It has **less than 500 lines of code**. 
 * It is not meant for building a full blown application. You may want to try [tiny-dnn](https://github.com/tiny-dnn/tiny-dnn) for a comprehensive platform. 
 * Concepts you may learn with this code:
     - *Forward propagation*
@@ -22,7 +22,7 @@
     - *Metrics to track convergence*
     - *Effects of floating point precision*
     - *Effects of weight and bias initialization*
-* The code is a translation of the Python code available in the excellent and freely available neural network [cs231n course](http://cs231n.github.io/neural-networks-case-study/) by Andrej Karpathy. You are encouraged to check his web-page that has all the theory in great detail. Also, you may try his original Python code instead.
+* The code is a translation of the Python code available in the excellent and freely available neural network [cs231n course](http://cs231n.github.io/neural-networks-case-study/) by Andrej Karpathy. You are encouraged to check his web-page. It has all the theory in great detail. Also, you may try his original Python code instead.
 
 ## What does the code do?
 
