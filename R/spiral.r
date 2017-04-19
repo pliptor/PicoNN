@@ -1,7 +1,12 @@
-# This script reads the train data and plots it
+# This script reads the train data and plots it.
+# The train data is the spiral pattern used in the
+# cn231 course by Andrej Karpathy
 
-train <- read.csv("../extras/svm_train.csv");
-test  <- read.csv("../extras/svm_test.csv");
+# The C++ code that generates it is located in
+# src/piconn.cpp 
+
+train <- read.csv("../extras/train.csv");
+test  <- read.csv("../extras/test.csv");
 
 train$color[train$Label==2] <- "red"
 train$color[train$Label==1] <- "blue"
