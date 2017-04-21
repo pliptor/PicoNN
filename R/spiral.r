@@ -1,5 +1,6 @@
+# Oscar Takeshita 2017
 # This script reads the train data and plots it.
-# Next, it makes an SVM model with radial basis kernel and plots the decision boundaries.
+# Next, it makes an SVM model with radial basis kernel (default setting) and plots the decision boundaries and areas.
 #
 # The train data is the spiral pattern used in the
 # cn231 course by Andrej Karpathy
@@ -11,23 +12,28 @@ input_image  <- "input.png";
 output_image <- "svmoutput.png";
 path <- "../extras/";
 
-load_data <- function() {
+load_data <- function(file) {
 	path <- "../extras/";
 	if(!dir.exists(path)) {
-		path <- "../input/"; #kaggle
+		path <- "../input/"; # chaning to kaggle environment
 	}
-	assign("train", read.csv(paste0(path, "train.csv")), envir = .GlobalEnv);
-	assign("test",  read.csv(paste0(path, "test.csv")),  envir = .GlobalEnv);
+	return (read.csv(paste0(path, file)));
 };
 
-load_data();
+train <- load_data("train.csv");
+test  <- load_data("test.csv");
 
-train$color[train$Label==2] <- "darkred";
-train$color[train$Label==1] <- "blue";
-train$color[train$Label==0] <- "coral";
+# color list for each of the classes. The example has three classes but one extra is needed as required by filled.contour
+clist      <- rainbow(4, s = 1,   v = 1, start = 0.2, 1, alpha = 1)
+clistdesat <- rainbow(4, s = 0.5, v = 1, start = 0.2, 1, alpha = 1)
+
+for (c in 1:3) {
+	train$color[train$Label==c-1] <- clist[c];
+	train$colordesat[train$Label==c-1] <- clistdesat[c];
+}
 
 # plot train data
-plot(train$X, train$Y, bg=train$color, pch=21,  main="Spiral Train", xlab="X", ylab="Y");
+plot(train$X, train$Y, bg=train$color , pch=21,  main="Spiral Train", xlab="X", ylab="Y");
 
 # write input image file 
 if(dir.exists(path) && !file.exists(paste0(path, input_image))) {
@@ -36,23 +42,24 @@ if(dir.exists(path) && !file.exists(paste0(path, input_image))) {
 }
 
 # transform Label column to factor so svm treats it as a categorical classification
-train$Label <- factor(train$Label, levels=c("0","1","2"), ordered=T);
+train$Label <- factor(train$Label, levels=c("0", "1", "2"), ordered=T);
 
 # load svm library 
 library(e1071);
-model <- svm(Label ~ ., data = train[,!colnames(train) %in% "color"]);
+model <- svm(Label ~ X + Y, data = train);
 print(model);
 summary(model);
 
 # predict and adjust offset so Labels return to the original set of {0, 1, 2}
 pred <- as.numeric(predict(model, test)) - 1;
 
-z <- matrix(pred, nrow = 100, byrow=F)
+# reshape prediction vector to a matrix to produce decision boundaries and areas
+z <- matrix(pred, nrow = sqrt(nrow(test)), byrow=F)
 # Make a contour plot for the decision boundaries. Also called "level plot"
 filled.contour(x = seq(-1, 1, length.out = nrow(z)),
                y = seq(-1, 1, length.out = ncol(z)),
-	       z, levels = seq(-0.5, 3 , 1), col = c("coral","blue","darkred","black"),
-	       xlab="X", ylab="Y", main="SVM classification (kernel=radial basis)");
+	       z, levels = seq(-0.5, 3 , 1), col = clistdesat,
+	       xlab="X", ylab="Y", main="SVM classification (kernel=radial basis)", plot.axes = {points(train$X, train$Y, bg=train$color, pch=21); axis(1); axis(2) });
 
 # write input image file 
 if(dir.exists(path) && !file.exists(paste0(path, output_image))) {
