@@ -61,7 +61,7 @@ filled.contour(x = seq(-1, 1, length.out = nrow(z)),
 	       z, levels = seq(-0.5, 3 , 1), col = clistdesat,
 	       xlab="X", ylab="Y", main="SVM classification (kernel=radial basis)", plot.axes = {points(train$X, train$Y, bg=train$color, pch=21); axis(1); axis(2) });
 
-# write input image file 
+# write output image file 
 if(dir.exists(path) && !file.exists(paste0(path, output_image))) {
 	dev.copy(png, paste0(path, output_image));
 	dev.off()

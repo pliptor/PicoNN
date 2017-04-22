@@ -32,8 +32,6 @@ Data | Segmented Data
 :------:|:--------:
 ![Data](./extras/input.png) |![Segmented Data](./extras/output.png)
 
-Note: the code that generates the above graphs is not yet included.
-
 ## How To
 
 This code was developed in Linux (Ubuntu 16.04.1LTS) but it should be easy to build it in any platform with a C++11 compiler. It has no dependencies and just one cpp file and two header files.
@@ -59,6 +57,6 @@ training accuracy 99.00%
 
 The last line shows that the segmentation was performed with 99% accuracy. The result will not perfectly match the original Python code. This is because of differences in random number generation.
 
-Note: It is worth trying to solve this problem using other than neural network techniques such as support vector machine (SVM). SVM works pretty well with this particular data.
+Note: It is worth trying to solve this problem using other than neural network techniques such as support vector machine (SVM). SVM works pretty well with this particular data. An R script with the SVM approach is also available in this repository.
 
 

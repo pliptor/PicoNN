@@ -11,6 +11,9 @@
 #include<algorithm>
 #include<cassert>
 #include<vector>
+#include<fstream>
+#include<sstream>
+#include<iostream>
 
 typedef double field; // field of real numbers
 
@@ -127,8 +130,8 @@ class network {
 		}
 
 		// forward pass routines
-		void evaluate_class_scores() { 
-			Hidden.mult(tdt->X, false, W1, false, static_cast<void*>(&b1)); // Hidden = X * W1 + b1
+		void evaluate_class_scores(mtx input) { 
+			Hidden.mult(input, false, W1, false, static_cast<void*>(&b1));  // Hidden = X * W1 + b1
 			Hidden.ReLU();   // Non-linearity 
 			Scores.mult(Hidden, false, W2, false, static_cast<void*>(&b2)); // Scores = Hidden * W2 + b2
 		}
@@ -208,7 +211,7 @@ class network {
 		// THE GRADIENT DESCENT. It optimizes the cost function.
 		void gradient_descent(unsigned int iterations) {
 			for(unsigned int i = 0; i<iterations; i++) {
-				evaluate_class_scores();
+				evaluate_class_scores(tdt->X);
 				compute_class_probabilities();
 				compute_loss();
 				compute_gradient_on_scores();
@@ -255,6 +258,47 @@ class network {
 			}
 			fprintf(stdout, "training accuracy %.2f%%\n", static_cast<field>(hit)*100/(N*K));
 		}
+
+		// predicts on model 
+		void predict(std::string input_file, std::string output_file) {
+			mtx A;
+			double x, y;
+			A.init(1,2);
+			std::string line;
+			std::ifstream in (input_file.c_str());
+			std::ofstream out (output_file.c_str());
+			if(!out.is_open()) {
+				std::cerr << "problem opening " << output_file << std::endl;
+				return;
+			}
+			else {
+				out << "Label,X,Y\n";
+			}
+			if(in.is_open()) {
+				getline(in, line); // discard header
+				while(getline(in, line, ',')) {
+					std::istringstream(line) >> x; A.set(0, 0, x);
+					getline(in, line);
+					std::istringstream(line) >> y; A.set(0, 1, y);
+					evaluate_class_scores(A);
+					float best_score = Scores.get(0, 0);
+					int best_label = 0;
+					for(int j = 1; j<K ;j++) {
+						if(Scores.get(0, j) > best_score) {
+							best_label = j;
+							best_score = Scores.get(0, j);
+						}
+					}				
+					out << best_label << "," << x << "," << y << std::endl;
+				}
+				in.close();
+				out.close();
+			}
+			else {
+				std::cerr  << "problem opening " << input_file << std::endl;
+				exit(-1);
+			}
+		}
 };
 
 int main(int argc, char *argv[]) {
@@ -298,6 +342,10 @@ int main(int argc, char *argv[]) {
 
 	// Reports training accuracy
 	nn.accuracy();               
+
+	// Read test cordinates and write predictions
+	//nn.predict("../extras/test.csv","../extras/prediction.csv");
+
 	return 0;
 }
 
