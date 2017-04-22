@@ -1,6 +1,6 @@
 # Oscar Takeshita 2017
 # This script reads the train data and plots it.
-# Next, it makes an SVM model with radial basis kernel (default setting) and plots the decision boundaries and areas.
+# Next, it makes an SVM model with each of it's kernels and plots the decision boundaries and areas.
 #
 # The train data is the spiral pattern used in the
 # cn231 course by Andrej Karpathy
@@ -45,8 +45,8 @@ train$Label <- factor(train$Label, levels=c("0", "1", "2"), ordered=T);
 
 # load svm library 
 library(e1071);
-svm_model <- function(title="SVM", kernel='radial basis') {
-	model <- svm(Label ~ X + Y, data = train, kernel=kernel, coef0=0);
+svm_model <- function(title="SVM", kernel='radial') {
+	model <- svm(Label ~ X + Y, data = train, kernel=kernel);
 	print(model);
 	summary(model);
 	plot_title = paste(title,'kernel',kernel);
@@ -81,7 +81,16 @@ if(dir.exists(path) && !file.exists(paste0(path, output_image))) {
 	dev.off()
 }
 
-# a linear kernel cannot handle the curved decision regions
+# polynomial kernel has its own 'features' 
+svm_model(kernel='polynomial')
+output_image <- "polyoutput.png";
+# write output image file 
+if(dir.exists(path) && !file.exists(paste0(path, output_image))) {
+	dev.copy(png, paste0(path, output_image));
+	dev.off()
+}
+
+# sigmoid kernel results in an odd output. Where is the issue? 
 svm_model(kernel='sigmoid')
 output_image <- "sigmoidoutput.png";
 # write output image file 
