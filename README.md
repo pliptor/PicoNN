@@ -59,6 +59,9 @@ The last line shows that the segmentation was performed with 99% accuracy. The r
 
 Note: It is worth trying to solve this problem using other than neural network techniques such as support vector machine (SVM). SVM works pretty well with this particular data. An R script with the SVM approach is also available in this repository. It has four kernels available and they are responses are plotted below.
 
+Radial Basis | Linear 
+:------:|:--------:
 ![SVM Radial Basis Kernel](./extras/svmoutput.png) |![SVM Linear Kernel](./extras/linearoutput.png)
+Polynomial | Sigmoid 
 ![SVM Polynomial Kernel](./extras/polyoutput.png) |![SVM Sigmoid Kernel](./extras/sigmoidoutput.png)
 
