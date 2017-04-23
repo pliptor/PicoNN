@@ -57,7 +57,9 @@ training accuracy 99.00%
 
 The last line shows that the segmentation was performed with 99% accuracy. The result will not perfectly match the original Python code. This is because of differences in random number generation.
 
-Note: It is worth trying to solve this problem using other than neural network techniques such as support vector machine (SVM). SVM works pretty well with this particular data. An R script with the SVM approach is also available in this repository. It has four kernels available and they are responses are plotted below.
+## Comparisson with Support Vector Machine (SVM)
+
+The input was also tested with the support vector machine (SVM) classification method for reference. SVM with radial kernel works pretty well with this particular data (R script included). It has four kernels available (radial basis, linear, polynomial and sigmoid). The results are suboptimal since all kernels were tested using default parameters.
 
 Radial Basis | Linear 
 :------:|:--------:
