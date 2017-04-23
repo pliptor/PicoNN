@@ -1,6 +1,6 @@
 # Oscar Takeshita 2017
 # This script reads the train data and plots it.
-# Next, it makes an SVM model with each of it's kernels and plots the decision boundaries and areas.
+# Next, it makes SVM models with each of its kernels and plots the decision boundaries and areas.
 #
 # The train data is the spiral pattern used in the
 # cn231 course by Andrej Karpathy
@@ -23,13 +23,13 @@ train <- load_data("train.csv");
 test  <- load_data("test.csv");
 
 # color list for each of the classes. The example has three classes but one extra is needed as required by filled.contour
-	clist      <- rainbow(4, s = 1,   v = 1, start = 0.2, 1, alpha = 1)
-clistdesat <- rainbow(4, s = 0.5, v = 1, start = 0.2, 1, alpha = 1)
+clist      <- rainbow(4, s = 1,   v = 1, start = 0.2, 1, alpha = 1);
+clistdesat <- rainbow(4, s = 0.5, v = 1, start = 0.2, 1, alpha = 1);
 
-	for (c in 1:3) {
-		train$color[train$Label==c-1] <- clist[c];
-		train$colordesat[train$Label==c-1] <- clistdesat[c];
-	}
+for (c in 1:3) {
+	train$color[train$Label==c-1] <- clist[c];
+	train$colordesat[train$Label==c-1] <- clistdesat[c];
+}
 
 # plot train data
 plot(train$X, train$Y, bg=train$color , pch=21,  main="Spiral Train", xlab="X", ylab="Y");
