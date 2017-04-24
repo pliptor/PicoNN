@@ -14,13 +14,14 @@ load_data <- function(file) {
 };
 
 train <- load_data("train.csv");
-pred <- load_data("prediction.csv");
+pred  <- load_data("prediction.csv");
+nclasses <- length(unique(train$Label));
 
 # color list for each of the classes. The example has three classes but one extra is needed as required by filled.contour
-clist      <- rainbow(4, s = 1,   v = 1, start = 0.2, 1, alpha = 1);
-clistdesat <- rainbow(4, s = 0.5, v = 1, start = 0.2, 1, alpha = 1);
+clist      <- rainbow(nclasses + 1, s = 1,   v = 1, start = 0.2, 1, alpha = 1);
+clistdesat <- rainbow(nclasses + 1, s = 0.5, v = 1, start = 0.2, 1, alpha = 1);
 
-for (c in 1:3) {
+for (c in 1:nclasses) {
 	train$color[train$Label==c-1] <- clist[c];
 	train$colordesat[train$Label==c-1] <- clistdesat[c];
 }
@@ -31,7 +32,7 @@ z <- matrix(pred$Label, nrow = sqrt(nrow(pred)), byrow=F)
 # Make a contour plot for the decision boundaries. Also called "level plot"
 	filled.contour(x = seq(-1, 1, length.out = nrow(z)),
 			y = seq(-1, 1, length.out = ncol(z)),
-			z = z, levels = seq(-0.5, 3 , 1), col = clistdesat,
+	                z = z, levels = seq(-0.5, nclasses , 1), col = clistdesat,
 			xlab="X", ylab="Y", main=title, plot.axes = {points(train$X, train$Y, bg=train$color, pch=21); axis(1); axis(2) });
 
 # write prediction image file 
