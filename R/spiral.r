@@ -21,12 +21,13 @@ load_data <- function(file) {
 
 train <- load_data("train.csv");
 test  <- load_data("test.csv");
+nclasses <- length(unique(train$Label));
 
 # color list for each of the classes. The example has three classes but one extra is needed as required by filled.contour
-clist      <- rainbow(4, s = 1,   v = 1, start = 0.2, 1, alpha = 1);
-clistdesat <- rainbow(4, s = 0.5, v = 1, start = 0.2, 1, alpha = 1);
+clist      <- rainbow(nclasses + 1, s = 1,   v = 1, start = 0.2, 1, alpha = 1);
+clistdesat <- rainbow(nclasses + 1, s = 0.5, v = 1, start = 0.2, 1, alpha = 1);
 
-for (c in 1:3) {
+for (c in 1:nclasses) {
 	train$color[train$Label==c-1] <- clist[c];
 	train$colordesat[train$Label==c-1] <- clistdesat[c];
 }
@@ -41,7 +42,7 @@ if(dir.exists(path) && !file.exists(paste0(path, input_image))) {
 }
 
 # transform Label column to factor so svm treats it as a categorical classification
-train$Label <- factor(train$Label, levels=c("0", "1", "2"), ordered=T);
+train$Label <- factor(train$Label, levels=seq(0,nclasses,1), ordered=T);
 
 # load svm library 
 library(e1071);
@@ -59,7 +60,7 @@ svm_model <- function(title="SVM", kernel='radial') {
 # Make a contour plot for the decision boundaries. Also called "level plot"
 		filled.contour(x = seq(-1, 1, length.out = nrow(z)),
 				y = seq(-1, 1, length.out = ncol(z)),
-				z, levels = seq(-0.5, 3 , 1), col = clistdesat,
+				z, levels = seq(-0.5, nclasses , 1), col = clistdesat,
 				xlab="X", ylab="Y", main=plot_title, plot.axes = {points(train$X, train$Y, bg=train$color, pch=21); axis(1); axis(2) });
 }
 
