@@ -1,5 +1,5 @@
 # Oscar Takeshita 2017
-# This script reads the train data and plots it.
+# This script first reads the train data and plots it.
 # Next, it makes an xgboost model and plots the decision boundaries and areas.
 #
 # The train data is the spiral pattern used in the
@@ -13,7 +13,7 @@ path <- "../extras/";
 
 load_data <- function(file) {
 	if(!dir.exists(path)) {
-		path <- "../input/"; # chaning to kaggle environment
+		path <- "../input/"; # changing to Kaggle environment
 	}
 	return (read.csv(paste0(path, file)));
 };
@@ -22,17 +22,17 @@ train <- load_data("train.csv");
 test  <- load_data("test.csv");
 nclasses <- length(unique(train$Label));
 
-# color list for each of the classes. The example has three classes but one extra is needed as required by filled.contour
+# color lists for each of the classes. One extra color is needed as required by filled.contour
 clist      <- rainbow(nclasses + 1, s = 1,   v = 1, start = 0.2, 1, alpha = 1);
 clistdesat <- rainbow(nclasses + 1, s = 0.5, v = 1, start = 0.2, 1, alpha = 1);
 
 for (c in 1:nclasses) {
-	train$color[train$Label==c-1] <- clist[c];
-	train$colordesat[train$Label==c-1] <- clistdesat[c];
+	train$color[train$Label==c-1] <- clist[c]; # for the points
+		train$colordesat[train$Label==c-1] <- clistdesat[c]; # for the decision areas
 }
 
 # plot train data
-plot(train$X, train$Y, bg=train$color , pch=21,  main="Spiral Train", xlab="X", ylab="Y");
+plot(train$X, train$Y, bg=train$color, pch=21,  main="Spiral Train", xlab="X", ylab="Y");
 
 # write input image file 
 if(dir.exists(path) && !file.exists(paste0(path, input_image))) {
@@ -124,14 +124,11 @@ filled.contour(x = seq(-1, 1, length.out = nrow(z)),
 		xlab="X", ylab="Y", main="xgboost", plot.axes = {points(train$X, train$Y, bg=train$color, pch=21); axis(1); axis(2) });
 
 output_image <- paste0("xgboost",".png");
-if(!dir.exists(path)) {
-	path <- "../input/"; # chaning to kaggle environment
-}
 # write output image file 
-if(dir.exists(path) && !file.exists(paste0(path, output_image))) {
+if(dir.exists(path))  {
 	dev.copy(png, paste0(path, output_image));
-	dev.off()
+	dev.off();
 } else {
-	dev.copy(png, output_image);
-	dev.off()
+	dev.copy(png, output_image); # Kaggle
+		dev.off();
 }
