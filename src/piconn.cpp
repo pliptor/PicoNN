@@ -35,6 +35,7 @@ class network {
 		int K;           // number of classes
 		int h;           // number of neurons in hidden layer
 		int N;
+		int U;           // batch size
 
 		rand_field *rd;  // normal gaussian random variable
 		t_data *tdt;     // data class
@@ -57,12 +58,11 @@ class network {
 			dW2.init(h, K);
 			db2.init(K, 1);
 
-			Hidden.init(N*K, h); 
-			dHidden.init(N*K, h);    
-			Scores.init(N*K, K);
+			Hidden.init(U, h); 
+			dHidden.init(U, h);    
+			Scores.init(U, K);
 
-			Probs.init(N*K, K);
-			Correct_log_probs.init(N, K);
+			Probs.init(U, K);
 			step_size = static_cast<field>(1.);
 			reg =       static_cast<field>(1e-3);
 			loss =      static_cast<field>(0.);
@@ -83,7 +83,6 @@ class network {
 
 		mtx Scores;
 		mtx Probs;
-		mtx Correct_log_probs;
 		void set_loss(field l)      { loss      = l; }; 
 		void set_data_loss(field l) { data_loss = l; }; 
 		void set_reg_loss(field l)  { reg_loss  = l; }; 
@@ -108,7 +107,6 @@ class network {
 			fprintf(stderr, "%d b2:\n",i);      b2.print(10);
 			fprintf(stderr, "%d scores:\n",i);  Scores.print(8);
 			fprintf(stderr, "%d probs:\n",i);   Probs.print(8);
-			fprintf(stderr, "%d cprobs:\n",i);  Correct_log_probs.print(8);
 			fprintf(stderr, "%d loss(%.10f) = data loss(%.10f) + reg loss(%.10f):\n",i, get_loss(), get_data_loss(), get_reg_loss()); 
 			fprintf(stderr, "%d hidden:\n",i);  Hidden.print(20);
 			fprintf(stderr, "%d dW2:\n",i);     dW2.print(8);
@@ -140,10 +138,10 @@ class network {
 			mtx Expscores(Scores);
 			Expscores.exp();
 			auto expscores = Expscores.vec();
-			std::vector<field> sum(N*K);
-			for(int i = 0; i<N*K; i++)
+			std::vector<field> sum(U);
+			for(int i = 0; i<U; i++)
 				sum[i] = std::accumulate(expscores.begin() + i*K, expscores.begin() + (i+1)*K, static_cast<field>(0.));
-			for(int i = 0; i<N*K; i++)
+			for(int i = 0; i<U; i++)
 				std::transform(expscores.begin() + i*K, expscores.begin() + (i+1)*K,
 						Probs.vecp()->begin() + i*K, [i, sum](field &p) { return p/sum[i];} );
 		}
@@ -153,17 +151,17 @@ class network {
 		// It is only used for monitoring at the moment
 		void compute_loss() { 
 			double dloss = 0.;
-			for(int i = 0; i<N*K; i++)
+			for(int i = 0; i<U; i++)
 				dloss -= std::log(Probs.get(i, tdt->Y.get(i)));
-			set_data_loss(static_cast<field>(dloss)/(N*K));
+			set_data_loss(static_cast<field>(dloss)/(U));
 			set_reg_loss(static_cast<field>(0.5 * reg) * (W1.L2() + W2.L2()));
 			set_loss(get_data_loss() + get_reg_loss());
 		}
 
 		void compute_gradient_on_scores() { 
-			for (int i = 0; i<N*K ; i++)
+			for (int i = 0; i<U ; i++)
 				Probs.add(i, tdt->Y.get(i), -1.);
-			Probs.div_all(N*K);
+			Probs.div_all(U);
 		}
 
 		void compute_dW2db2() { //
@@ -234,6 +232,7 @@ class network {
 			this->K = tdt.get_K();
 			this->D = tdt.get_D();
 			this->rd = &rd;
+			this->U = N*K;
 			build();
 		}
 
@@ -241,7 +240,7 @@ class network {
 		// reports training accuracy
 		void accuracy() {
 			int hit = 0;
-			for(int i = 0; i< N*K; i++) {
+			for(int i = 0; i< U; i++) {
 				field best_score = -10000;
 				int best_index = -1;
 				for(int j = 0; j<K; j++) {
@@ -254,10 +253,12 @@ class network {
 				if(best_index == tdt->Y.get(i))
 					hit++;
 			}
-			fprintf(stdout, "training accuracy %.2f%%\n", static_cast<field>(hit)*100/(N*K));
+			std::fprintf(stdout, "training accuracy %.2f%%\n", static_cast<field>(hit)*100/(U));
 		}
 
-		// predicts on model 
+		// predicts on model. The input_file is contains
+		// the data to be classified in csv format.
+		// The output is written in csv format as well
 		void predict(std::string input_file, std::string output_file) {
 			mtx A;
 			double x, y;
@@ -307,7 +308,7 @@ int main(int argc, char *argv[]) {
 		generator.seed(1);
 	rand_field rd;
 
-	// Data model spiral : N*K points inside a 2 x 2 square 
+	// Data model spiral : U points inside a 2 x 2 square 
 	// Points belong to K different classes and the configuration is such that
 	// there are no linear boundaries that separates each class. In other words,
 	// they can't be grouped by drawing a few straight lines. See figure...
