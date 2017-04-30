@@ -251,7 +251,7 @@ class network {
 					}
 				}
 				assert(best_index != -1);
-				if(best_index == (i/N))
+				if(best_index == tdt->Y.get(i))
 					hit++;
 			}
 			fprintf(stdout, "training accuracy %.2f%%\n", static_cast<field>(hit)*100/(N*K));
