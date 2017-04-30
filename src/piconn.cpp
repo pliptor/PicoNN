@@ -153,18 +153,16 @@ class network {
 		// It is only used for monitoring at the moment
 		void compute_loss() { 
 			double dloss = 0.;
-			for(int i = 0; i<K; i++)
-				for( int j = 0; j<N; j++)
-					dloss -= std::log(Probs.get(j + N*i, i));
+			for(int i = 0; i<N*K; i++)
+				dloss -= std::log(Probs.get(i, tdt->Y.get(i)));
 			set_data_loss(static_cast<field>(dloss)/(N*K));
 			set_reg_loss(static_cast<field>(0.5 * reg) * (W1.L2() + W2.L2()));
 			set_loss(get_data_loss() + get_reg_loss());
 		}
 
 		void compute_gradient_on_scores() { 
-			for(int i = 0; i<K; i++)
-				for(int j = 0; j<N; j++)
-					Probs.add( j + N*i, i, -1.);
+			for (int i = 0; i<N*K ; i++)
+				Probs.add(i, tdt->Y.get(i), -1.);
 			Probs.div_all(N*K);
 		}
 
