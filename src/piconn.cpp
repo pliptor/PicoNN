@@ -47,7 +47,7 @@ class network {
 		field reg_loss;
 
 		void build() {
-			fprintf(stderr, "Network parameters: Nodes per class  N = %d, Dimension D = %d   Classes K = %d   Hidden nodes h = %d\n",N, D, K, h);
+			fprintf(stderr, "Network parameters: Batch size = %d, Dimension D = %d   Classes K = %d   Hidden nodes h = %d\n", U, D, K, h);
 			W1.init(D, h);      
 			b1.init(h, 1);
 			W2.init(h, K);
@@ -228,11 +228,10 @@ class network {
 		network(int h, t_data &tdt, rand_field &rd) {
 			this->h = h;
 			this->tdt = &tdt;
-			this->N = tdt.get_N();
+			this->U = tdt.get_U();
 			this->K = tdt.get_K();
 			this->D = tdt.get_D();
 			this->rd = &rd;
-			this->U = N*K;
 			build();
 		}
 
