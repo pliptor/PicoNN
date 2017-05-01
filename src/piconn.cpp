@@ -260,8 +260,7 @@ class network {
 		// The output is written in csv format as well
 		void predict(std::string input_file, std::string output_file) {
 			mtx A;
-			double x, y;
-			A.init(1,2);
+			A.init(1,D); // row vector for data
 			std::string line;
 			std::ifstream in (input_file.c_str());
 			std::ofstream out (output_file.c_str());
@@ -270,14 +269,20 @@ class network {
 				return;
 			}
 			else {
-				out << "Label,X,Y\n";
+				out << "Label";
+				for (int i = 0; i<D; i++)
+					out  << "," << "d" << i;
+				out << std::endl;
 			}
 			if(in.is_open()) {
 				getline(in, line); // discard header
-				while(getline(in, line, ',')) {
-					std::istringstream(line) >> x; A.set(0, 0, x);
-					getline(in, line);
-					std::istringstream(line) >> y; A.set(0, 1, y);
+				std::string entry;
+				while(getline(in, line)) {
+					std::istringstream ss(line);
+					for (int i = 0; i<D; i++) {
+						std::getline(ss, entry, ',');
+						A.set(0, i, static_cast<field>(std::stod(entry)));
+					}
 					evaluate_class_scores(A);
 					float best_score = Scores.get(0, 0);
 					int best_label = 0;
@@ -287,7 +292,10 @@ class network {
 							best_score = Scores.get(0, j);
 						}
 					}				
-					out << best_label << "," << x << "," << y << std::endl;
+					out << best_label;
+					for (int i = 0; i<D; i++)
+						out  << "," << A.get(0,i);
+					out << std::endl;
 				}
 				in.close();
 				out.close();
