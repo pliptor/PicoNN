@@ -22,11 +22,12 @@
     - *Metrics to track convergence*
     - *Effects of floating point precision*
     - *Effects of weight and bias initialization*
+    - *Automatic differentiation*
 * The code is a translation of the Python code available in the excellent and freely available neural network [cs231n course](http://cs231n.github.io/neural-networks-case-study/) by Andrej Karpathy. You are encouraged to check his web-page. It has all the theory in great detail. Also, you may try his original Python code instead.
 
 ## What does the code do?
 
-It segments a group of KxN=300 points, where K=3 is the number of distinct classes and N=100 the number of points in each class.
+It segments a group of U=300 points belonging to K=3 classes. There are 100 points in each class.
 
 Data | Segmented Data
 :------:|:--------:
