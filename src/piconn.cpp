@@ -34,7 +34,6 @@ class network {
 		int D;           // input data dimension
 		int K;           // number of classes
 		int h;           // number of neurons in hidden layer
-		int N;
 		int U;           // batch size
 
 		rand_field *rd;  // normal gaussian random variable
