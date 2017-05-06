@@ -14,7 +14,7 @@ path <- "../extras/";
 load_data <- function(file) {
 	path <- "../extras/";
 	if(!dir.exists(path)) {
-		path <- "../input/"; # chaning to kaggle environment
+		path <- "../input/"; # Changing to Kaggle environment
 	}
 	return (read.csv(paste0(path, file)));
 };
